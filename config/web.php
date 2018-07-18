@@ -52,8 +52,14 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'user'],
+                ['class' => 'yii\rest\UrlRule',
+                    'controller' => ['access-tokens' => 'accesstoken'],
+                ],
+                'POST access-tokens/refresh' => 'accesstoken/refresh',
+                'POST access-tokens' => 'accesstoken/create'
             ],
-        ]
+        ],
+
     ],
     'params' => $params,
 ];

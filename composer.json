@@ -18,7 +18,9 @@
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "csanquer/pdo-service-provider": "~1.1dev"
+        "csanquer/pdo-service-provider": "~1.1dev",
+        "firebase/php-jwt": "dev-master",
+        "alfarioekaputra/yii2-jwt": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
@@ -64,6 +66,10 @@
         {
             "type": "composer",
             "url": "https://asset-packagist.org"
+        },
+        {
+            "type":"git",
+            "url":"https://github.com/alfarioekaputra/yii2-jwt.git"
         }
     ]
 }
