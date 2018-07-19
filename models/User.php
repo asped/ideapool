@@ -23,7 +23,7 @@ class User extends ActiveRecord implements IdentityInterface
     // Override this method
     protected static function getSecretKey()
     {
-        return 'someSecretKey';
+        return 'codementor2018';
     }
 
     // And this one if you wish
@@ -46,7 +46,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['name', 'username'], 'string', 'max' => 50],
-            [['password'], 'string', 'max' => 255],
+            [['password'], 'string', 'max' => 255, 'min'=>8 ],
         ];
     }
 
@@ -60,6 +60,7 @@ class User extends ActiveRecord implements IdentityInterface
             'name' => 'Name',
             'username' => 'Username',
             'password' => 'Password',
+            'refresh_token' => 'Refresh token',
         ];
     }
 
@@ -72,7 +73,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        // TODO: Implement findIdentity() method.
+        return static::findOne(['id' => $id]);
     }
 
     /**
@@ -81,7 +82,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getId()
     {
-        // TODO: Implement getId() method.
+        return $this->id;
     }
 
     /**
@@ -98,7 +99,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getAuthKey()
     {
-        // TODO: Implement getAuthKey() method.
+        return $this->id;
     }
 
     /**
@@ -111,11 +112,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        // TODO: Implement validateAuthKey() method.
+        return $authKey==$this->id;
     }
 
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        return static::findOne(['access_token' => $token]);
-    }
 }
