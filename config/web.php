@@ -54,7 +54,7 @@ $config = [
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'user',
                     'extraPatterns'=>[
-                        'POST' => 'signup']
+                        'GET signup' => 'signup']
                 ],
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => ['access-tokens' => 'accesstoken'],
