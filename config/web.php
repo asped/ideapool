@@ -53,7 +53,7 @@ $config = [
             'rules' => [
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'user',
-                    'patterns'=>[
+                    'extraPatterns'=>[
                         'POST' => 'signup']
                 ],
                 ['class' => 'yii\rest\UrlRule',
