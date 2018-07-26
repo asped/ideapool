@@ -10,7 +10,7 @@ use Yii;
  *
  * @property int $id
  * @property string $name
- * @property string $username
+ * @property string $email
  * @property string $password
  */
 use yii\db\ActiveRecord;
@@ -45,8 +45,9 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['name', 'username'], 'string', 'max' => 50],
+            [['name', 'email'], 'string', 'max' => 50],
             [['password'], 'string', 'max' => 255, 'min'=>8 ],
+            // @todo AXR - add validation for password
         ];
     }
 
@@ -58,7 +59,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'username' => 'Username',
+            'email' => 'Email',
             'password' => 'Password',
             'refresh_token' => 'Refresh token',
         ];
@@ -115,4 +116,11 @@ class User extends ActiveRecord implements IdentityInterface
         return $authKey==$this->id;
     }
 
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            $this->password = password_hash($this->password,PASSWORD_DEFAULT);
+        }
+        return parent::beforeSave($insert);
+    }
 }

@@ -51,16 +51,21 @@ $config = [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule',
+                [
+                    'class' => 'yii\rest\UrlRule',
                     'controller' => 'user',
-                    'extraPatterns'=>[
-                        'GET signup' => 'signup']
+                    'patterns' => [
+                        'POST' => 'signup',
+                    ]
                 ],
-                ['class' => 'yii\rest\UrlRule',
+                [
+                    'class' => 'yii\rest\UrlRule',
                     'controller' => ['access-tokens' => 'accesstoken'],
+                    'patterns' => [
+                        'POST' => 'login',
+                        'POST refresh' => 'refresh',
+                    ]
                 ],
-                'POST access-tokens/refresh' => 'accesstoken/refresh',
-                'POST access-tokens' => 'accesstoken/create'
             ],
         ],
 
