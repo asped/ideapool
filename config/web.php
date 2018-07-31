@@ -64,6 +64,7 @@ $config = [
                     'patterns' => [
                         'POST' => 'login',
                         'POST refresh' => 'refresh',
+                        'DELETE' => 'logout',
                     ]
                 ],
             ],

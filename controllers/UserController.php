@@ -3,11 +3,9 @@ namespace app\controllers;
 
 use app\models\User;
 use yii\base\Exception;
-use yii\data\ArrayDataProvider;
+use yii\filters\auth\HttpHeaderAuth;
 use yii\rest\ActiveController;
-use yii\filters\auth\HttpBearerAuth;
 use \Yii;
-use yii\helpers\Url;
 use yii\web\ServerErrorHttpException;
 
 class UserController extends ActiveController
@@ -18,7 +16,8 @@ class UserController extends ActiveController
     {
         return array_merge(parent::behaviors(), [
             'bearerAuth' => [
-                'class' => HttpBearerAuth::class,
+                'class' => HttpHeaderAuth::class,
+                'header'=>'X-Access-Token',
                 'except' => ['signup']
             ],
         ]);
@@ -29,7 +28,7 @@ class UserController extends ActiveController
         $response = Yii::$app->getResponse();
         try {
             $model = new User([
-//            'scenario' => 'signup',
+//                'scenario' => 'signup',
             ]);
             $model->load(Yii::$app->getRequest()->getBodyParams(), '');
             $model->refresh_token = sha1($model->getJWT());
@@ -41,7 +40,8 @@ class UserController extends ActiveController
                 throw new ServerErrorHttpException('Failed to create the object for unknown reason.');
             } else {
                 $response->setStatusCode(422);
-                return ['errors' => $model->errors];
+                /// @todo AXR check why errors won' when e/g/ duplicate email
+                return ['errors' => $model->getErrorSummary(true)];
             }
         } catch (Exception $e) {
             $response->setStatusCode(422);
