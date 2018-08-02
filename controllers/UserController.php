@@ -17,7 +17,7 @@ class UserController extends ActiveController
         return array_merge(parent::behaviors(), [
             'bearerAuth' => [
                 'class' => HttpHeaderAuth::class,
-                'header'=>'X-Access-Token',
+                'header' => 'X-Access-Token',
                 'except' => ['signup']
             ],
         ]);
@@ -47,6 +47,12 @@ class UserController extends ActiveController
             $response->setStatusCode(422);
             return ['errors' => $model->errors];
         }
+    }
+
+    public function actionMe()
+    {
+        $user = \Yii::$app->user->identity;
+        return ['email' => $user->email, 'name' => $user->name];
     }
 
     public function actions()

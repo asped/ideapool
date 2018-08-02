@@ -64,7 +64,7 @@ class AccesstokenController extends \yii\rest\Controller
         if(\Yii::$app->user->logout()) {
 
             \Yii::$app->getResponse()->setStatusCode(204);
-//            return ['jwt' => $user->getJWT(), 'refresh_token' => $user->refresh_token];
+            return ['message' => 'User logged out'];
 //        } else {
 //            throw new UnauthorizedHttpException(\Yii::t('yii', 'Email or password is not correct'));
         }

@@ -56,6 +56,7 @@ $config = [
                     'controller' => 'user',
                     'patterns' => [
                         'POST' => 'signup',
+                        'GET me' => 'me'
                     ]
                 ],
                 [
@@ -67,6 +68,14 @@ $config = [
                         'DELETE' => 'logout',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'user',
+                    'patterns' => [
+                        'POST' => 'signup',
+                        'GET me' => 'me'
+                    ]
+                ]
             ],
         ],
 
