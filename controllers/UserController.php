@@ -48,35 +48,34 @@ class UserController extends ActiveController
             return ['errors' => $model->errors];
         }
     }
-
     public function actionMe()
     {
         $user = \Yii::$app->user->identity;
-        return ['email' => $user->email, 'name' => $user->name];
+        return ['email' => $user->email, 'name' => $user->name, 'avatar_url'=>$user->gravatar];
     }
 
-    public function actions()
-    {
-        $actions = parent::actions();
-//        $actions['create']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
-        return $actions;
-    }
-
-    public function prepareDataProvider($action)
-    {
-        var_dump($action);
-        die;
-
-        $payload = \Yii::$app->request->post();
-        $payload = [
-            "sub" => "asdads",
-            "name" => "John Doe",
-            "admin" => true
-        ];
-        $secret = 'secret';
-
-        $jwt = JWT::encode($payload, $secret);
-
-
-    }
+//    public function actions()
+//    {
+//        $actions = parent::actions();
+////        $actions['create']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+//        return $actions;
+//    }
+//
+//    public function prepareDataProvider($action)
+//    {
+//        var_dump($action);
+//        die;
+//
+//        $payload = \Yii::$app->request->post();
+//        $payload = [
+//            "sub" => "asdads",
+//            "name" => "John Doe",
+//            "admin" => true
+//        ];
+//        $secret = 'secret';
+//
+//        $jwt = JWT::encode($payload, $secret);
+//
+//
+//    }
 }
