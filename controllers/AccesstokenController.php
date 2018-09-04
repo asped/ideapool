@@ -62,7 +62,6 @@ class AccesstokenController extends \yii\rest\Controller
             throw new BadRequestHttpException(\Yii::t('yii', 'Missing or incorrect required parameter: refresh_token'));
         }
         if(\Yii::$app->user->logout()) {
-
             \Yii::$app->getResponse()->setStatusCode(204);
             return ['message' => 'User logged out'];
 //        } else {

@@ -29,8 +29,11 @@ class User extends ActiveRecord implements IdentityInterface
     // And this one if you wish
     protected static function getHeaderToken()
     {
-        return [];
+        return [
+            'exp' =>  (new \DateTime())->add(new \DateInterval('PT10M'))->getTimestamp()
+        ];
     }
+
     /**
      * {@inheritdoc}
      */
@@ -46,7 +49,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['name', 'email'], 'string', 'max' => 50],
-            [['password'], 'string', 'max' => 255, 'min'=>8 ],
+            [['password'], 'string', 'max' => 255, 'min' => 8],
             // @todo AXR - add validation for password
         ];
     }
@@ -113,14 +116,20 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        return $authKey==$this->id;
+        return $authKey == $this->id;
     }
 
     public function beforeSave($insert)
     {
         if ($insert) {
-            $this->password = password_hash($this->password,PASSWORD_DEFAULT);
+            $this->password = password_hash($this->password, PASSWORD_DEFAULT);
         }
         return parent::beforeSave($insert);
+    }
+
+    public function getGravatar()
+    {
+        return "https://www.gravatar.com/avatar/" . md5(strtolower(trim($this->email)));
+
     }
 }

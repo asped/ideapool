@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 
+use app\models\Blacklist;
 use app\models\User;
 use yii\base\Exception;
 use yii\filters\auth\HttpHeaderAuth;
@@ -23,6 +24,11 @@ class UserController extends ActiveController
         ]);
     }
 
+    public function beforeLogout($identity)
+    {
+//        $blacklist = Blacklist.new
+//        $blacklist->
+    }
     public function actionSignup()
     {
         $response = Yii::$app->getResponse();
@@ -52,7 +58,7 @@ class UserController extends ActiveController
     public function actionMe()
     {
         $user = \Yii::$app->user->identity;
-        return ['email' => $user->email, 'name' => $user->name];
+        return ['email' => $user->email, 'name' => $user->name, avatar_url => $user->gravatar];
     }
 
     public function actions()
