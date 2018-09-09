@@ -20,6 +20,8 @@ class User extends ActiveRecord implements IdentityInterface
 {
     use UserTrait;
 
+    const JWT_EXPIRE_TIME = 30; // 10 minutes
+
     // Override this method
     protected static function getSecretKey()
     {
@@ -30,11 +32,14 @@ class User extends ActiveRecord implements IdentityInterface
     protected static function getHeaderToken()
     {
         return [
-            'exp' =>  (new \DateTime())->add(new \DateInterval('PT10M'))->getTimestamp()
+            'exp'=> time() + self::JWT_EXPIRE_TIME * 60
         ];
     }
-
-    /**
+//    public static function findIdentityByAccessToken($token, $type = null) {
+//
+//    }
+//
+   /**
      * {@inheritdoc}
      */
     public static function tableName()

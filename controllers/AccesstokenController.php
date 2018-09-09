@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\BlacklistedToken;
 use app\models\User;
 use Firebase\JWT\JWT;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -56,12 +57,16 @@ class AccesstokenController extends \yii\rest\Controller
         }
     }
 
-    public function actionLogout()
-    {
+    public function actionLogout() {
+
         if (!in_array('refresh_token', array_keys($this->params)) || \Yii::$app->user->identity->refresh_token != $this->params['refresh_token']) {
             throw new BadRequestHttpException(\Yii::t('yii', 'Missing or incorrect required parameter: refresh_token'));
         }
         if(\Yii::$app->user->logout()) {
+            $blacklist = new BlacklistedToken;
+            $blacklist->token = \Yii::$app->request->headers->get('X-Access-Token');
+            $blacklist->save();
+
             \Yii::$app->getResponse()->setStatusCode(204);
             return ['message' => 'User logged out'];
 //        } else {
