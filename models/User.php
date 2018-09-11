@@ -15,31 +15,17 @@ use Yii;
  */
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\web\UnauthorizedHttpException;
 
 class User extends ActiveRecord implements IdentityInterface
 {
-    use UserTrait;
-
+    use UserTrait {
+        findIdentityByAccessToken as public findId;
+    }
     const JWT_EXPIRE_TIME = 30; // 10 minutes
 
     // Override this method
-    protected static function getSecretKey()
-    {
-        return 'codementor2018';
-    }
-
-    // And this one if you wish
-    protected static function getHeaderToken()
-    {
-        return [
-            'exp'=> time() + self::JWT_EXPIRE_TIME * 60
-        ];
-    }
-//    public static function findIdentityByAccessToken($token, $type = null) {
-//
-//    }
-//
-   /**
+    /**
      * {@inheritdoc}
      */
     public static function tableName()
@@ -54,8 +40,11 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['name', 'email'], 'string', 'max' => 50],
+            [['name', 'email', 'password'], 'required'],
             [['password'], 'string', 'max' => 255, 'min' => 8],
-            // @todo AXR - add validation for password
+            [['password'], 'match', 'pattern' => '/^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(.+)$/', 'message' => 'Password must be at least 8 characters, including 1 uppercase letter, 1 lowercase letter, and 1 number'],
+            [['email'], 'email'],
+            [['email'], 'unique'],
         ];
     }
 
@@ -71,6 +60,29 @@ class User extends ActiveRecord implements IdentityInterface
             'password' => 'Password',
             'refresh_token' => 'Refresh token',
         ];
+    }
+
+    protected static function getSecretKey()
+    {
+        return 'codementor2018';
+    }
+
+    // And this one if you wish
+
+    protected static function getHeaderToken()
+    {
+        return [
+            'exp' => time() + self::JWT_EXPIRE_TIME * 60
+        ];
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        $black = BlacklistedToken::findOne(['token' => $token]);
+        if ($black) {
+            throw new UnauthorizedHttpException('Invalid token');
+        }
+        return static::findId($token, $type);
     }
 
     /**

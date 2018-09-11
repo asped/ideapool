@@ -60,6 +60,7 @@ $config = [
                     ]
                 ],
                 [
+                    //todo AXR forbid all the classic action, so nobody can simly post to login
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['access-tokens' => 'accesstoken'],
                     'patterns' => [

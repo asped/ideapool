@@ -1,7 +1,7 @@
 <?php
 namespace app\controllers;
 
-use app\models\Blacklist;
+use app\models\BlacklistedToken;
 use app\models\User;
 use yii\base\Exception;
 use yii\filters\auth\HttpHeaderAuth;
@@ -24,11 +24,11 @@ class UserController extends ActiveController
         ]);
     }
 
-    public function beforeLogout($identity)
-    {
-//        $blacklist = Blacklist.new
-//        $blacklist->
-    }
+//    public function beforeLogout($identity)
+//    {
+//        $blacklist = new BlacklistedToken();
+//        $blacklist->token = $identity->user->refresh_token;
+//    }
     public function actionSignup()
     {
         $response = Yii::$app->getResponse();
@@ -37,6 +37,7 @@ class UserController extends ActiveController
 //                'scenario' => 'signup',
             ]);
             $model->load(Yii::$app->getRequest()->getBodyParams(), '');
+            // @todo AXR add some randomness here and also update on login, so we can
             $model->refresh_token = sha1($model->getJWT());
 
             if ($model->save()) {

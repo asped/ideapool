@@ -31,8 +31,15 @@ class BlacklistedToken extends ActiveRecord
     {
         return [
             [['token'], 'string', 'max' => 1000],
-            [['expiration'],'date', 'format' => 'yyyy-M-d H:m:s'],
+            [['token'], 'unique'],
+            [['expiration'], 'date', 'format' => 'yyyy-M-d H:m:s'],
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        $this->expiration = date("Y-m-d H:i:s", time() + 3600 * 24);
+        return parent::beforeSave($insert);
     }
 
 }
