@@ -51,16 +51,19 @@ $config = [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                'me' => 'user/me',
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'user',
+                    'controller' => 'idea',
                     'patterns' => [
-                        'POST' => 'signup',
-                        'GET me' => 'me'
+                        'GET' => 'list',
                     ]
                 ],
                 [
-                    //todo AXR forbid all the classic action, so nobody can simly post to login
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'idea',
+                ],
+                [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['access-tokens' => 'accesstoken'],
                     'patterns' => [
@@ -97,7 +100,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['*', '::1'],
     ];
 }
 

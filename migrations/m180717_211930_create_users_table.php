@@ -14,13 +14,13 @@ class m180717_211930_create_users_table extends Migration
     {
         $this->createTable('users', [
             'id' => $this->primaryKey(),
-            'email'=>$this->string(100)->unique(),
-            'name'=>$this->string(50),
-            'password'=>$this->string(255),
-            'refresh_token'=>$this->string(255)
+            'email' => $this->string(100)->unique(),
+            'name' => $this->string(50),
+            'password' => $this->string(255),
+            'refresh_token' => $this->string(255),
         ]);
-        $this->createIndex('users_username','users','email');
-        $this->createIndex('users_token','users','refresh_token');
+        $this->createIndex('users_username', 'users', 'email');
+        $this->createIndex('users_token', 'users', 'refresh_token');
     }
 
     /**
