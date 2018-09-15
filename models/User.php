@@ -13,6 +13,7 @@ use Yii;
  * @property string $email
  * @property string $password
  */
+
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\web\UnauthorizedHttpException;

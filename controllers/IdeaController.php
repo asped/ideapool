@@ -19,7 +19,7 @@ class IdeaController extends \yii\rest\ActiveController
         return array_merge(parent::behaviors(), [
             'bearerAuth' => [
                 'class' => HttpHeaderAuth::class,
-                'header'=>'X-Access-Token',
+                'header' => 'X-Access-Token',
             ],
         ]);
     }
@@ -34,11 +34,11 @@ class IdeaController extends \yii\rest\ActiveController
     {
 
         return new \yii\data\ActiveDataProvider([
-            'query' => \app\models\Idea::find()->where(['created_by'=>\Yii::$app->user->id])->orderBy(['average_score'=>SORT_DESC]),
+            'query' => \app\models\Idea::find()->where(['created_by' => \Yii::$app->user->id])->orderBy(['average_score' => SORT_DESC]),
             'pagination' => [
                 'pageSize' => 10,
             ],
         ]);
-}
+    }
 
 }

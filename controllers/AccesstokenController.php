@@ -6,7 +6,6 @@ use app\models\BlacklistedToken;
 use app\models\User;
 use Firebase\JWT\JWT;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\HttpHeaderAuth;
 use yii\web\UnauthorizedHttpException;
 
@@ -19,8 +18,8 @@ class AccesstokenController extends \yii\rest\Controller
         return array_merge(parent::behaviors(), [
             'bearerAuth' => [
                 'class' => HttpHeaderAuth::class,
-                'header'=>'X-Access-Token',
-                'except' => ['refresh','login']
+                'header' => 'X-Access-Token',
+                'except' => ['refresh', 'login']
             ],
         ]);
     }
@@ -57,20 +56,19 @@ class AccesstokenController extends \yii\rest\Controller
         }
     }
 
-    public function actionLogout() {
+    public function actionLogout()
+    {
 
         if (!in_array('refresh_token', array_keys($this->params)) || \Yii::$app->user->identity->refresh_token != $this->params['refresh_token']) {
             throw new BadRequestHttpException(\Yii::t('yii', 'Missing or incorrect required parameter: refresh_token'));
         }
-        if(\Yii::$app->user->logout()) {
+        if (\Yii::$app->user->logout()) {
             $blacklist = new BlacklistedToken;
             $blacklist->token = \Yii::$app->request->headers->get('X-Access-Token');
             $blacklist->save();
 
             \Yii::$app->getResponse()->setStatusCode(204);
             return ['message' => 'User logged out'];
-//        } else {
-//            throw new UnauthorizedHttpException(\Yii::t('yii', 'Email or password is not correct'));
         }
     }
 }

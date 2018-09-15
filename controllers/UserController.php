@@ -1,7 +1,7 @@
 <?php
+
 namespace app\controllers;
 
-use app\models\BlacklistedToken;
 use app\models\User;
 use yii\base\Exception;
 use yii\filters\auth\HttpHeaderAuth;
@@ -24,20 +24,12 @@ class UserController extends ActiveController
         ]);
     }
 
-//    public function beforeLogout($identity)
-//    {
-//        $blacklist = new BlacklistedToken();
-//        $blacklist->token = $identity->user->refresh_token;
-//    }
     public function actionSignup()
     {
         $response = Yii::$app->getResponse();
         try {
-            $model = new User([
-//                'scenario' => 'signup',
-            ]);
+            $model = new User;
             $model->load(Yii::$app->getRequest()->getBodyParams(), '');
-            // @todo AXR add some randomness here and also update on login, so we can
             $model->refresh_token = sha1($model->getJWT());
 
             if ($model->save()) {
@@ -47,7 +39,6 @@ class UserController extends ActiveController
                 throw new ServerErrorHttpException('Failed to create the object for unknown reason.');
             } else {
                 $response->setStatusCode(422);
-                /// @todo AXR check why errors won' when e/g/ duplicate email
                 return ['errors' => $model->getErrorSummary(true)];
             }
         } catch (Exception $e) {
@@ -55,34 +46,10 @@ class UserController extends ActiveController
             return ['errors' => $model->errors];
         }
     }
+
     public function actionMe()
     {
         $user = \Yii::$app->user->identity;
         return ['email' => $user->email, 'name' => $user->name, 'avatar_url' => $user->gravatar];
     }
-
-//    public function actions()
-//    {
-//        $actions = parent::actions();
-////        $actions['create']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
-//        return $actions;
-//    }
-//
-//    public function prepareDataProvider($action)
-//    {
-//        var_dump($action);
-//        die;
-//
-//        $payload = \Yii::$app->request->post();
-//        $payload = [
-//            "sub" => "asdads",
-//            "name" => "John Doe",
-//            "admin" => true
-//        ];
-//        $secret = 'secret';
-//
-//        $jwt = JWT::encode($payload, $secret);
-//
-//
-//    }
 }

@@ -34,8 +34,8 @@ class Idea extends \yii\db\ActiveRecord
             [['impact', 'ease', 'confidence'], 'integer', 'min' => 1, 'max' => 10],
             [['created_by'], 'integer'],
             [['created_at'], 'safe'],
-            [['content'], 'string', 'length' => [1,255]],
-            [['impact', 'ease', 'confidence','content'], 'required'],
+            [['content'], 'string', 'length' => [1, 255]],
+            [['impact', 'ease', 'confidence', 'content'], 'required'],
 
         ];
     }

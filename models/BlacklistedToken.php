@@ -12,6 +12,7 @@ use Yii;
  * @property string $email
  * @property string $password
  */
+
 use yii\db\ActiveRecord;
 
 class BlacklistedToken extends ActiveRecord
